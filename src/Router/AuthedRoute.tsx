@@ -1,19 +1,19 @@
-import Applications from "@/pages/Applications"
-import Error from "@/pages/Error"
-import Home from "@/pages/Home"
-import Layout from "@/pages/Layout"
-import Payments from "@/pages/payments"
-import Profile from "@/pages/Settings/Profile"
-import Settings from "@/pages/Settings/Settings"
-import Students from "@/pages/Students"
-import { Route, Routes } from "react-router"
+import Applications from "@/pages/Applications";
+import Error from "@/pages/Error";
+import Home from "@/pages/Home";
+import Layout from "@/pages/Layout";
+import Payment from "@/pages/Payment";
+import Profile from "@/pages/Settings/Profile";
+import Settings from "@/pages/Settings/Settings";
+import Students from "@/pages/Students";
+import { Route, Routes } from "react-router";
 
 const AuthedRoute = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="/payments" element={<Payments />} />
+        <Route path="/payments" element={<Payment />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings/profile" element={<Profile />} />
         <Route path="/students" element={<Students />} />
@@ -22,7 +22,7 @@ const AuthedRoute = () => {
         <Route path="/error" element={<Error />} />
       </Route>
     </Routes>
-  )
-}
+  );
+};
 
-export default AuthedRoute
+export default AuthedRoute;

@@ -78,23 +78,44 @@ export type Database = {
           created_at: string
           id: string
           payment_method: Database["public"]["Enums"]["payment_method"]
-          user_id: string
+          profile_id: string
+          purpose: string
+          student_id: string | null
         }
         Insert: {
           amount: number
           created_at?: string
           id?: string
           payment_method?: Database["public"]["Enums"]["payment_method"]
-          user_id: string
+          profile_id: string
+          purpose: string
+          student_id?: string | null
         }
         Update: {
           amount?: number
           created_at?: string
           id?: string
           payment_method?: Database["public"]["Enums"]["payment_method"]
-          user_id?: string
+          profile_id?: string
+          purpose?: string
+          student_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "payments_profile_id_fkey1"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
