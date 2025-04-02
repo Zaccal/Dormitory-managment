@@ -16,9 +16,14 @@ import { EnumPurpusePayment } from "@/types/Enums";
 interface IStudentPayment {
   control: Control<IPaymentForm, any>;
   purpuse: EnumPurpusePayment;
+  errorMessage?: string;
 }
 
-const StudentPayment = ({ control, purpuse }: IStudentPayment) => {
+const StudentPayment = ({
+  control,
+  purpuse,
+  errorMessage,
+}: IStudentPayment) => {
   const { data, isLoading, isError, error } = useProfilesRow();
 
   if (isLoading) return <Skeleton className="w-full h-10 rounded-md" />;
@@ -41,7 +46,7 @@ const StudentPayment = ({ control, purpuse }: IStudentPayment) => {
       control={control}
       render={({ field }) => (
         <Select onValueChange={field.onChange} disabled={isLoading}>
-          <SelectTrigger>
+          <SelectTrigger varaint={errorMessage ? "error" : "default"}>
             <SelectValue placeholder="Выбрите студента который оплачивает" />
           </SelectTrigger>
           <SelectContent>
