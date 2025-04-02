@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { EnumPurpusePayment } from "@/types/Enums";
-import { error } from "console";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 export interface IPaymentForm {
@@ -104,7 +103,11 @@ const Payment = () => {
               placeholder="Опишите цель траты"
             />
           ) : (
-            <StudentPayment purpuse={purpuse} control={control} />
+            <StudentPayment
+              errorMessage={errors.studentId?.message}
+              purpuse={purpuse}
+              control={control}
+            />
           )
         ) : undefined}
 
