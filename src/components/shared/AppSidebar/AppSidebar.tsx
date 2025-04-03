@@ -1,4 +1,12 @@
-import { BedSingle, BookUser, CircleDollarSign, Home, Settings, Users } from "lucide-react"
+import {
+  BedSingle,
+  BookUser,
+  CircleDollarSign,
+  Home,
+  Receipt,
+  Settings,
+  Users,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -12,10 +20,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { useEffect } from "react"
-import { Link, NavLink } from "react-router"
-import NavUser from "./NavUser"
+} from "@/components/ui/sidebar";
+import { useEffect } from "react";
+import { Link, NavLink } from "react-router";
+import NavUser from "./NavUser";
 
 const items = [
   {
@@ -43,17 +51,26 @@ const items = [
     url: "/payments",
     icon: CircleDollarSign,
   },
-]
+  {
+    title: "Чеки",
+    url: "/bills",
+    icon: Receipt,
+  },
+];
 
 export function AppSidebar() {
-  const { open } = useSidebar()
+  const { open } = useSidebar();
 
   useEffect(() => {
-    localStorage.setItem("sidebar:state", JSON.stringify(open))
-  }, [open])
+    localStorage.setItem("sidebar:state", JSON.stringify(open));
+  }, [open]);
 
   return (
-    <Sidebar variant="inset" className="dark:border-r border-r-border" collapsible="icon">
+    <Sidebar
+      variant="inset"
+      className="dark:border-r border-r-border"
+      collapsible="icon"
+    >
       <SidebarHeader>
         <NavUser />
       </SidebarHeader>
@@ -62,14 +79,14 @@ export function AppSidebar() {
           <SidebarGroupLabel>Навигация</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map(item => (
+              {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink
                       className={({ isActive, isPending }) => {
-                        console.log(isActive, isPending)
+                        console.log(isActive, isPending);
 
-                        return isActive ? "bg-accent" : ""
+                        return isActive ? "bg-accent" : "";
                       }}
                       to={item.url}
                     >
@@ -94,5 +111,5 @@ export function AppSidebar() {
         </SidebarMenuItem>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
