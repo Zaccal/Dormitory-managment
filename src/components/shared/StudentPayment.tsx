@@ -11,18 +11,20 @@ import {
 import { Skeleton } from "../ui/skeleton";
 import { Control, Controller } from "react-hook-form";
 import { IPaymentForm } from "@/pages/Payment";
-import { EnumPurpusePayment } from "@/types/Enums";
+import { Database } from "@/types/supabase.types";
 
 interface IStudentPayment {
   control: Control<IPaymentForm, any>;
-  purpuse: EnumPurpusePayment;
+  isPending: boolean;
+  purpose: Database["public"]["Enums"]["payment_purpose"];
   errorMessage?: string;
 }
 
 const StudentPayment = ({
   control,
-  purpuse,
+  purpose,
   errorMessage,
+  isPending,
 }: IStudentPayment) => {
   const { data, isLoading, isError, error } = useProfilesRow();
 
@@ -39,13 +41,16 @@ const StudentPayment = ({
       name="studentId"
       rules={{
         required: {
-          value: purpuse === EnumPurpusePayment.STUDENT_PAYMENT,
+          value: purpose === "student_payment",
           message: "Выберите студента",
         },
       }}
       control={control}
       render={({ field }) => (
-        <Select onValueChange={field.onChange} disabled={isLoading}>
+        <Select
+          onValueChange={field.onChange}
+          disabled={isLoading || isPending}
+        >
           <SelectTrigger varaint={errorMessage ? "error" : "default"}>
             <SelectValue placeholder="Выбрите студента который оплачивает" />
           </SelectTrigger>

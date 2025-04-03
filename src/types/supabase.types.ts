@@ -74,43 +74,36 @@ export type Database = {
       }
       payments: {
         Row: {
-          amount: number
+          amount: string
           created_at: string
           id: string
           payment_method: Database["public"]["Enums"]["payment_method"]
-          profile_id: string
-          purpose: string
-          student_id: string | null
+          purpose: Database["public"]["Enums"]["payment_purpose"]
+          reasone: string
+          student_profile_id: string | null
         }
         Insert: {
-          amount: number
+          amount: string
           created_at?: string
           id?: string
           payment_method?: Database["public"]["Enums"]["payment_method"]
-          profile_id: string
-          purpose: string
-          student_id?: string | null
+          purpose: Database["public"]["Enums"]["payment_purpose"]
+          reasone: string
+          student_profile_id?: string | null
         }
         Update: {
-          amount?: number
+          amount?: string
           created_at?: string
           id?: string
           payment_method?: Database["public"]["Enums"]["payment_method"]
-          profile_id?: string
-          purpose?: string
-          student_id?: string | null
+          purpose?: Database["public"]["Enums"]["payment_purpose"]
+          reasone?: string
+          student_profile_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "payments_profile_id_fkey1"
-            columns: ["profile_id"]
-            isOneToOne: true
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "payments_student_id_fkey"
-            columns: ["student_id"]
+            foreignKeyName: "payments_student_profile_id_fkey2"
+            columns: ["student_profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -222,6 +215,7 @@ export type Database = {
     }
     Enums: {
       payment_method: "CASH" | "KASPI"
+      payment_purpose: "student_payment" | "dormitory_expenses"
       role:
         | "administrator"
         | "main_superintendent"

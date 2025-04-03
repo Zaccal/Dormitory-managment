@@ -12,14 +12,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { EnumPurpusePayment } from "@/types/Enums";
+import useInsertPayment from "@/hooks/useInsertPayment";
+import { Database } from "@/types/supabase.types";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 export interface IPaymentForm {
-  purpuse: EnumPurpusePayment;
-  resone: string;
+  purpose: Database["public"]["Enums"]["payment_purpose"];
+  reasone: string;
   studentId: string | null;
   amount: string;
+  paymentMethod: Database["public"]["Enums"]["payment_method"];
 }
 
 const Payment = () => {
@@ -31,10 +33,23 @@ const Payment = () => {
     formState: { errors },
     watch,
   } = useForm<IPaymentForm>();
-  const purpuse = watch("purpuse");
+  const purpose = watch("purpose");
+  const { mutateAsync, isPending } = useInsertPayment();
 
-  const handler: SubmitHandler<IPaymentForm> = (data) => {
-    console.log(data);
+  const handler: SubmitHandler<IPaymentForm> = async ({
+    amount,
+    purpose,
+    reasone,
+    studentId,
+    paymentMethod,
+  }) => {
+    await mutateAsync({
+      amount,
+      purpose,
+      student_profile_id: studentId,
+      reasone: reasone || "Оплата студента",
+      payment_method: paymentMethod,
+    });
     reset();
   };
 
@@ -48,7 +63,10 @@ const Payment = () => {
         <InputWithLabel
           placeholder="10,000 ₸"
           htmlFor="amount"
-          label={errors.amount ? errors.amount.message : "Стоимость в тенге"}
+          disabled={isPending}
+          label={
+            errors.amount?.message ? errors.amount.message : "Стоимость в тенге"
+          }
           {...register("amount", {
             required: {
               value: true,
@@ -58,9 +76,43 @@ const Payment = () => {
         />
 
         <div className="">
+          <Label htmlFor="paymentMethod">Способ оплаты:</Label>
+          <Controller
+            name="paymentMethod"
+            rules={{
+              required: {
+                value: true,
+                message: "Выберите способ оплаты",
+              },
+            }}
+            control={control}
+            render={({ field }) => {
+              return (
+                <Select
+                  disabled={isPending}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger id="purpuse">
+                    <SelectValue placeholder="Способ оплаты" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Выберите цель</SelectLabel>
+                      <SelectItem value="CASH">Наличкой</SelectItem>
+                      <SelectItem value="KASPI">Kaspi оплата</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              );
+            }}
+          />{" "}
+        </div>
+
+        <div className="">
           <Label htmlFor="purpuse">Цель:</Label>
           <Controller
-            name="purpuse"
+            name="purpose"
             rules={{
               required: {
                 value: true,
@@ -70,14 +122,18 @@ const Payment = () => {
             control={control}
             render={({ field }) => {
               return (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  disabled={isPending}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger id="purpuse">
                     <SelectValue placeholder="Цель оплаты" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Выберите цель</SelectLabel>
-                      <SelectItem value="studentPayment">
+                      <SelectItem value="student_payment">
                         Опалата студента
                       </SelectItem>
                       <SelectItem value="dormitory_expenses">
@@ -91,27 +147,29 @@ const Payment = () => {
           />{" "}
         </div>
 
-        {purpuse !== undefined ? (
-          purpuse === EnumPurpusePayment.DROMITORY_EXPENSES ? (
+        {purpose !== undefined ? (
+          purpose === "dormitory_expenses" ? (
             <Textarea
-              {...register("resone", {
+              {...register("reasone", {
                 required: {
                   value: true,
                   message: "Введите цель трать",
                 },
               })}
+              disabled={isPending}
               placeholder="Опишите цель траты"
             />
           ) : (
             <StudentPayment
+              isPending={isPending}
               errorMessage={errors.studentId?.message}
-              purpuse={purpuse}
+              purpose={purpose}
               control={control}
             />
           )
         ) : undefined}
 
-        <Button type="submit" className="w-full mt-8">
+        <Button disabled={isPending} type="submit" className="w-full mt-8">
           Внести оплату
         </Button>
       </form>
