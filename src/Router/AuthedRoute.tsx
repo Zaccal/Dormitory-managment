@@ -2,6 +2,7 @@ import Applications from "@/pages/Applications";
 import Error from "@/pages/Error";
 import Home from "@/pages/Home";
 import Layout from "@/pages/Layout";
+import Notifications from "@/pages/Notifications";
 import Payment from "@/pages/Payment";
 import Profile from "@/pages/Settings/Profile";
 import Settings from "@/pages/Settings/Settings";
@@ -14,6 +15,7 @@ const AuthedRoute = () => {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="/payments" element={<Payment />} />
+        <Route path="/notifications" element={<Notifications />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings/profile" element={<Profile />} />
         <Route path="/students" element={<Students />} />
