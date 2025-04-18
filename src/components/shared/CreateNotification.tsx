@@ -19,9 +19,9 @@ import { Textarea } from '../ui/textarea'
 import useInsertNotification from '@/hooks/useInsertNotification'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { Database } from '@/types/supabase.types'
-import { useAuth } from '@/hooks/useAuth'
 import { useState } from 'react'
 import Loader from './Loader'
+import useProfile from '@/hooks/useProfile'
 
 interface INotificationForm {
     type: Database['public']['Enums']['type_notification']
@@ -30,7 +30,7 @@ interface INotificationForm {
 
 const CreateNotification = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const { user, isError: isErrorAuth } = useAuth()
+    const { data: profile, isLoading, isError: isProfileError } = useProfile()
     const { mutateAsync, isPending } = useInsertNotification()
     const {
         register,
@@ -43,20 +43,19 @@ const CreateNotification = () => {
         data,
     ) => {
         const now = new Date()
-        if (user && !isErrorAuth) {
+        if (profile && !isProfileError && !isLoading) {
             await mutateAsync({
                 expired_at: new Date(
                     now.getTime() + 24 * 60 * 60 * 1000,
                 ).toISOString(),
                 message: data.message,
                 type: data.type,
-                user_id: user.id,
+                user_id: profile.id,
             })
 
             setIsOpen(false)
         }
     }
-    console.log(errors.type)
     return (
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger>
