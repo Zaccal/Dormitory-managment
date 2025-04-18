@@ -25,13 +25,14 @@ function App() {
             </div>
         )
 
-    if (isError || isErrorProfile || !data)
+    if (isError || isErrorProfile) {
         return (
             <Error
                 className="mt-16"
                 title={error?.message || errorProfile?.message}
             />
         )
+    }
 
     return (
         <>
