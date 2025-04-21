@@ -1,15 +1,25 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { ReactNode } from "react"
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactNode } from 'react'
 
 interface IQueryProviderClient {
-  children: ReactNode | ReactNode[]
+    children: ReactNode | ReactNode[]
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+        },
+    },
+})
 
 const QueryProviderClient = ({ children }: IQueryProviderClient) => {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    return (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
 }
 
 export default QueryProviderClient
