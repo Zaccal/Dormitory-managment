@@ -1,4 +1,5 @@
 import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
 import useAmountOfMoneyForThisMonth from '@/hooks/useAmountOfMoneyForThisMonth'
 import { formatNumber } from '@/utils/FormatePrice'
 
@@ -7,7 +8,7 @@ const Revenge = () => {
 
     return (
         <>
-            {!isError && !isLoading ? (
+            {!isLoading && !isError ? (
                 <div className="flex min-w-[300px] flex-col gap-2">
                     <h3 className="font-semibold text-2xl">
                         Соброно в этом месяце
@@ -29,9 +30,11 @@ const Revenge = () => {
                     <p>Необходимая цель: ₸{formatNumber(data?.goal || 0)}</p>
                 </div>
             ) : (
-                <p className="text-destructive font-bold">
-                    Error: {error?.message}
-                </p>
+                <Skeleton className="min-w-[300px] h-[138px]" />
+            )}
+
+            {isError && (
+                <p className="text-destructive">Ошипка: {error.message}</p>
             )}
         </>
     )
