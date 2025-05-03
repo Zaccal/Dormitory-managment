@@ -20,7 +20,9 @@ const NoticationSection = () => {
                     />
                 ))
             ) : (
-                <Loader />
+                <div className="flex justify-center items-center h-[70%] w-full">
+                    <Loader />
+                </div>
             )}
         </div>
     )
