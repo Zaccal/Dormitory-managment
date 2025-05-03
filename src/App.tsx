@@ -8,7 +8,6 @@ import UnauthedRoute from './Router/UnauthedRoute'
 
 function App() {
     const {
-        data,
         error: errorProfile,
         isError: isErrorProfile,
         isLoading: isLoadingProfile,
