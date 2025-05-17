@@ -5,40 +5,43 @@ import { useToast } from './use-toast'
 import { queryClient } from '@/providers/QueryProviderClient'
 
 type TypeInsertNotification =
-  Database['public']['Tables']['notifications']['Insert']
+    Database['public']['Tables']['notifications']['Insert']
 
 function useInsertNotification() {
-  const { toast } = useToast()
-  return useMutation({
-    mutationFn: async (data: TypeInsertNotification) => {
-      const { data: response, error } = await supabase
-        .from('notifications')
-        .insert(data)
+    const { toast } = useToast()
+    return useMutation({
+        mutationFn: async (data: TypeInsertNotification) => {
+            const { data: response, error } = await supabase
+                .from('notifications')
+                .insert(data)
 
-      if (error) throw error
+            if (error) throw error
 
-      return response
-    },
-    onSuccess: () => {
-      toast({
-        title: 'Уведомление отправлено успешно!',
-        variant: 'success',
-      })
+            return response
+        },
+        onSuccess: () => {
+            toast({
+                title: 'Уведомление отправлено успешно!',
+                variant: 'success',
+            })
 
-      queryClient.invalidateQueries({ queryKey: ["notifications"] })
-    },
-    onError: (error) => {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'Упс что-то пошло не так!'
+            // TODO: Fix a bug when request successfully sended it does not invalidatte queries
+            queryClient.invalidateQueries({
+                queryKey: ['notifications', 'count-student-payment-month'],
+            })
+        },
+        onError: (error) => {
+            const errorMessage =
+                error instanceof Error
+                    ? error.message
+                    : 'Упс что-то пошло не так!'
 
-      toast({
-        title: errorMessage,
-        variant: 'destructive',
-      })
-    },
-  })
+            toast({
+                title: errorMessage,
+                variant: 'destructive',
+            })
+        },
+    })
 }
 
 export default useInsertNotification

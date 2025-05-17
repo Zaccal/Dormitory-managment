@@ -41,8 +41,9 @@ const NotificationCard = ({
             return data
         },
         onSuccess: () => {
+            // TODO: Fix a bug when request successfully sended it does not invalidatte queries
             queryClient.invalidateQueries({
-                queryKey: ['notifications'],
+                queryKey: ['notifications', 'count-student-payment-month'],
             })
         },
     })
