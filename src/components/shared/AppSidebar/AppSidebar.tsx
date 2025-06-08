@@ -1,14 +1,4 @@
 import {
-    BedSingle,
-    BookUser,
-    CircleDollarSign,
-    Home,
-    Receipt,
-    Settings,
-    Users,
-} from 'lucide-react'
-
-import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
@@ -23,41 +13,9 @@ import {
 } from '@/components/ui/sidebar'
 import { useEffect } from 'react'
 import { Link, NavLink } from 'react-router'
-import NavUser from './NavUser'
-
-// TODO: Move another file as constant
-const items = [
-    {
-        title: 'Главная',
-        url: '/',
-        icon: Home,
-    },
-    {
-        title: 'Студенты',
-        url: '/students',
-        icon: Users,
-    },
-    {
-        title: 'Комнаты',
-        url: '/rooms',
-        icon: BedSingle,
-    },
-    {
-        title: 'Завяки',
-        url: '/applications',
-        icon: BookUser,
-    },
-    {
-        title: 'Оплата',
-        url: '/payments',
-        icon: CircleDollarSign,
-    },
-    {
-        title: 'Чеки',
-        url: '/bills',
-        icon: Receipt,
-    },
-]
+import NavUser from './NavUser/NavUser'
+import { SIDEBAR_ITEMS } from '@/lib/constants'
+import { Settings } from 'lucide-react'
 
 export function AppSidebar() {
     const { open } = useSidebar()
@@ -80,7 +38,7 @@ export function AppSidebar() {
                     <SidebarGroupLabel>Навигация</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item) => (
+                            {SIDEBAR_ITEMS.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
                                         <NavLink

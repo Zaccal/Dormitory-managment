@@ -1,41 +1,45 @@
 import { Button } from '@/components/ui/button'
 import { InputWithLabel } from '@/components/ui/input'
-import { SignInData, useAuth } from '@/hooks/useAuth'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import Loader from '../Loader'
+import { LoginForm as ILoginForm } from '@/types/forms.types'
+import { useLogin } from '@/hooks/auth/useAuth'
 
 const LoginForm = () => {
     const {
-        signIn,
-        signInMutation: { isPending, isError, error },
-    } = useAuth()
+        error: loginError,
+        isPending,
+        mutate: signIn,
+        isSuccess,
+    } = useLogin()
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm<SignInData>()
+    } = useForm<ILoginForm>()
 
-    const submitHandler: SubmitHandler<SignInData> = async (data, event) => {
+    const submitHandler: SubmitHandler<ILoginForm> = (data, event) => {
         event?.preventDefault()
-        await signIn(data)
+        signIn(data)
 
-        if (!isError) {
+        if (isSuccess) {
             reset()
         }
     }
 
+    // TODO: Try to use a "from" component from shadcn
     return (
         <form
             onSubmit={handleSubmit(submitHandler)}
             className="flex flex-col gap-6"
         >
-            {error && (
+            {loginError && (
                 <div className="px-4 py-2 text-white bg-destructive rounded-sm">
                     <h3>
-                        {error?.message == 'Invalid login credentials'
+                        {loginError?.message == 'Invalid login credentials'
                             ? 'Введен неверный логин или пароль, повторите попытку'
-                            : `Ошипка: ${error.message}, (${error.status})`}
+                            : `Ошипка: ${loginError.message}`}
                     </h3>
                 </div>
             )}

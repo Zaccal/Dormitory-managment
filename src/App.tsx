@@ -1,41 +1,38 @@
-import Loader from './components/shared/Loader'
+import { Route, Routes } from 'react-router'
 import { Toaster } from './components/ui/toaster'
-import { useAuth } from './hooks/useAuth'
-import useProfile from './hooks/useProfile'
-import Error from './pages/Error'
-import AuthedRoute from './Router/AuthedRoute'
-import UnauthedRoute from './Router/UnauthedRoute'
+import {
+    GuestOnly,
+    PublicRoutes,
+    RequireAuth,
+    PrivateRoute,
+} from './Router/index'
+import Layout from './pages/Layout'
+import { Error, NotFound } from './pages'
 
 function App() {
-    const {
-        error: errorProfile,
-        isError: isErrorProfile,
-        isLoading: isLoadingProfile,
-    } = useProfile()
-    const { user, isError, error, isLoading } = useAuth()
-
-    if (isLoading || isLoadingProfile)
-        return (
-            <div className="flex items-center justify-center h-screen w-full">
-                <div className="text-center">
-                    <Loader />
-                    <p className="font-bold">Загрузка...</p>
-                </div>
-            </div>
-        )
-
-    if (isError || isErrorProfile) {
-        return (
-            <Error
-                className="mt-16"
-                title={error?.message || errorProfile?.message}
-            />
-        )
-    }
-
     return (
         <>
-            {user ? <AuthedRoute /> : <UnauthedRoute />}
+            <Routes>
+                <Route element={<GuestOnly />}>
+                    {PublicRoutes.map((routeProps) => (
+                        <Route key={routeProps.path} {...routeProps} />
+                    ))}
+                </Route>
+
+                <Route
+                    element={
+                        <RequireAuth>
+                            <Layout />
+                        </RequireAuth>
+                    }
+                >
+                    {PrivateRoute.map((routeProps) => (
+                        <Route key={routeProps.path} {...routeProps} />
+                    ))}
+                </Route>
+                <Route path="*" element={<NotFound />} />
+                <Route path="/error" element={<Error />} />
+            </Routes>
             <Toaster />
         </>
     )

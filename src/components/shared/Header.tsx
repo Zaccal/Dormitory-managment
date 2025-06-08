@@ -4,8 +4,8 @@ import { Button } from '../ui/button'
 import { Separator } from '../ui/separator'
 import { SidebarTrigger } from '../ui/sidebar'
 import Container from './Container'
-import useGetCountNotification from '@/hooks/useGetCountNotification'
-import { formatNumber } from '@/utils/formatNumber'
+import useGetCountNotification from '@/hooks/notifications/useGetCountNotification'
+import { formatNumber } from '@/lib/formatNumber'
 
 const Header = () => {
     const { isLoading, isError, data } = useGetCountNotification()

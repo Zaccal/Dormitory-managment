@@ -3,15 +3,15 @@ import {
     getIcon,
     getTitle,
     TypeNotification,
-} from '@/utils/getSignNotification'
-import { truncateTextByWords } from '@/utils/TruncateText'
+} from '@/lib/notificationStaticData'
+import { truncateTextByWords } from '@/lib/truncateText'
 import dayjs from 'dayjs'
 import { Button } from '../ui/button'
 import { Trash2 } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 import { useMutation } from '@tanstack/react-query'
-import supabase from '@/utils/supabase'
-import { queryClient } from '@/providers/QueryProviderClient'
+import supabase from '@/lib/supabase'
+import { queryClient } from '@/providers/queryProviderClient'
 import ConfirmModal from './ConfirmModal'
 
 interface INotificationCard {

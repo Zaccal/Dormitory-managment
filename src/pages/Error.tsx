@@ -8,16 +8,16 @@ interface IError {
 }
 
 const Error = ({
-    status = 404,
-    description = 'Такой страницы не найдено попробуи еще раз',
+    status = 500,
+    description = '',
     title = 'Упс что то не так!',
     className,
 }: IError) => {
     return (
         <div
             className={cn(
-                'w-full h-full flex items-center justify-center',
-                className,
+                'h-screen w-full flex items-center justify-center',
+                className
             )}
         >
             <div className="">

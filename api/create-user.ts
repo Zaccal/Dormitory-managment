@@ -1,23 +1,11 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { createClient } from '@supabase/supabase-js'
+import { CreateUserData } from './auth-api.types'
 
 const supabaseAdmin = createClient(
     process.env.SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || '',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 )
-
-interface IBodyRequest {
-    email?: string
-    password?: string
-    first_name?: string
-    last_name?: string
-    home_address?: string
-    room_number?: number
-    phone: string
-    father_phone?: string
-    mother_phone?: string
-    patronymic?: string
-}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method !== 'POST') {
@@ -26,7 +14,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const token = req.headers.authorization?.split(' ')[1]
 
-    const { email, password, ...profileData }: Partial<IBodyRequest> = req.body
+    const { email, password, ...profileData }: Partial<CreateUserData> =
+        req.body
 
     const { data: checkedData, error: isCheckedDataError } = await supabaseAdmin
         .from('profiles')
@@ -49,8 +38,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             .status(400)
             .json({ error: 'Email and password are required' })
 
-    const { data: user, error: authError } =
-        await supabaseAdmin.auth.getUser(token)
+    const { data: user, error: authError } = await supabaseAdmin.auth.getUser(
+        token
+    )
 
     if (authError && !user)
         return res.status(401).json({ error: 'Invalid token' })

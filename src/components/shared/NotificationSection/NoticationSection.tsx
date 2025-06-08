@@ -1,4 +1,4 @@
-import useGetRecentNotification from '@/hooks/useGetRecentNotification'
+import useGetRecentNotification from '@/hooks/notifications/useGetRecentNotification'
 import NotificaitonSectionHeader from './NotificaitonSectionHeader'
 import NotificationSectionItem from './NotificationSectionItem'
 import Loader from '../Loader'

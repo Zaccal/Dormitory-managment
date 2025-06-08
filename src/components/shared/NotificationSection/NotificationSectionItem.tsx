@@ -2,8 +2,8 @@ import {
     getIcon,
     getTitle,
     TypeNotification,
-} from '@/utils/getSignNotification'
-import { truncateTextByWords } from '@/utils/TruncateText'
+} from '@/lib/notificationStaticData'
+import { truncateTextByWords } from '@/lib/truncateText'
 
 interface INotificationSectionItem {
     type: TypeNotification

@@ -1,4 +1,4 @@
-import useProfilesRow from '@/hooks/useProfilesRow'
+import useProfilesRow from '@/hooks/user/useProfilesRow'
 import {
     Select,
     SelectContent,

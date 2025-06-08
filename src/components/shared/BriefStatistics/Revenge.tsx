@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import useAmountOfMoneyForThisMonth from '@/hooks/useAmountOfMoneyForThisMonth'
-import { formatNumber } from '@/utils/FormatePrice'
+import useAmountOfMoneyForThisMonth from '@/hooks/statistics/useAmountOfMoneyForThisMonth'
+import { formatNumber } from '@/lib/formatPrice'
 
 const Revenge = () => {
     const { data, error, isError, isLoading } = useAmountOfMoneyForThisMonth()
